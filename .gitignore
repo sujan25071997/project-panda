@@ -1,0 +1,51 @@
+# -------------------
+# General
+# -------------------
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.so
+.DS_Store
+__pycache__/
+.vscode/
+.env
+.env.local
+.env.*.local
+
+# Ignore all virtual environments anywhere in the project
+**/venv/
+**/.venv/
+
+# -------------------
+# Python/Django: panda_api/
+# -------------------
+panda_api/__pycache__/
+panda_api/*.py[cod]
+panda_api/*.sqlite3
+panda_api/media/
+panda_api/staticfiles/
+panda_api/.env
+panda_api/db.sqlite3
+
+# Django migrations cache
+panda_api/**/migrations/
+panda_api/**/migrations/__pycache__/
+panda_api/**/migrations/*.pyc
+
+# -------------------
+# Node/Next.js: panda-ui/
+# -------------------
+panda-ui/node_modules/
+panda-ui/.next/
+panda-ui/dist/
+panda-ui/out/
+panda-ui/.env
+panda-ui/.env.local
+panda-ui/.env.*.local
+
+# Logs
+panda-ui/npm-debug.log*
+panda-ui/yarn-debug.log*
+panda-ui/yarn-error.log*
