@@ -5,6 +5,7 @@ import Navbar from "@/components/NavBar";
 import SignInPopUp from "@/components/SignInPopUp";
 import { Provider } from "react-redux";
 import store from "@/store/store";
+import { ToastContainer } from "react-toastify";
 
 export default function App({
   Component,
@@ -19,6 +20,7 @@ export default function App({
             <Component {...pageProps} />
           </main>
           <SignInPopUp />
+          <ToastContainer />
         </div>
       </SessionProvider>
     </Provider>
