@@ -28,15 +28,7 @@ export const ProfilePage = () => {
   };
 
   return (
-    <div
-      className="relative min-h-screen"
-      style={{
-        backgroundImage: `url("/panda-bg.png")`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
+    <div className="relative min-h-screen">
       {/* Black transparent overlay */}
       <div className="absolute inset-0 bg-black/20" />
 

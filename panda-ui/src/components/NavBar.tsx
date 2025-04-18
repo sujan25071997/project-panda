@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -7,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useSession, signOut, signIn } from "next-auth/react";
 import { useDispatch } from "react-redux";
 import { googleLogin } from "@/store/actions/googleLoginActions";
-import { UserCircle2 } from "lucide-react";
+import { LogOut, UserCircle2, UserPen } from "lucide-react";
 
 export default function Navbar() {
   const { data: session } = useSession();
@@ -40,7 +38,7 @@ export default function Navbar() {
   }, [session, dispatch]);
 
   return (
-    <nav className="bg-green-600 shadow-lg">
+    <nav className="relative z-[1000] bg-white/30 backdrop-brightness-40 shadow-md border-b border-white/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
@@ -92,18 +90,19 @@ export default function Navbar() {
                 </button>
 
                 <div
-                  className={`absolute right-0 mt-2 w-40 bg-white rounded-md shadow-md overflow-hidden z-50 transition-all duration-200 origin-top-right ${
+                  className={`absolute right-0 mt-2 w-40 bg-white/60 backdrop-brightness-40 rounded-md shadow-md overflow-hidden z-50 transition-all duration-200 origin-top-right ${
                     dropdownOpen
-                      ? "opacity-100 scale-100"
+                      ? "opacity-100 scale-100 pointer-events-auto"
                       : "opacity-0 scale-95 pointer-events-none"
                   }`}
                 >
                   <Link
                     href="/profile"
-                    className="block px-4 py-2 text-sm text-gray-800 hover:bg-green-100 transition rounded-t-md"
+                    className="flex justify-between px-4 py-2 text-sm text-gray-800 hover:bg-green-600 transition rounded-t-md"
                     onClick={() => setDropdownOpen(false)}
                   >
-                    Profile
+                    <div>Profile</div>
+                    <UserPen size={15} />
                   </Link>
                   <div className="border-t border-gray-200 my-1"></div>
                   <button
@@ -111,9 +110,10 @@ export default function Navbar() {
                       signOut({ callbackUrl: "/" });
                       clearLocalStorage();
                     }}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-800 hover:bg-green-100 transition rounded-b-md"
+                    className="flex justify-between cursor-pointer w-full text-left px-4 py-2 text-sm text-gray-800 hover:bg-green-600 transition rounded-b-md"
                   >
-                    Sign Out
+                    <div>Sign Out</div>
+                    <LogOut size={15} />
                   </button>
                 </div>
               </div>

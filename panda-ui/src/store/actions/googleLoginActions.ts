@@ -22,7 +22,7 @@ export const googleLogin =
       // Dispatch the success action with the access token
       dispatch(googleLoginSuccess(response.data.access_token));
 
-      toast.success("Successfully logged in!", { autoClose: 2000 });
+      toast.success("Successfully logged in!", { autoClose: 1500 });
     } catch (error: any) {
       localStorage.clear();
       dispatch(googleLoginFailure("Google login failed"));
