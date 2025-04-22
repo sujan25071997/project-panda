@@ -3,15 +3,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSession, signOut, signIn } from "next-auth/react";
-import { useDispatch } from "react-redux";
-import { googleLogin } from "@/store/actions/googleLoginActions";
-import { LogOut, UserCircle2, UserPen } from "lucide-react";
+import { LogIn, LogOut, UserCircle2, UserPen } from "lucide-react";
 
 export default function Navbar() {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dispatch = useDispatch();
   const pathname = usePathname();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -21,10 +18,6 @@ export default function Navbar() {
   const isActive = (path: string) => pathname === path;
 
   useEffect(() => {
-    if (session?.accessToken) {
-      dispatch(googleLogin(session.accessToken));
-    }
-
     const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
@@ -33,9 +26,10 @@ export default function Navbar() {
         setDropdownOpen(false);
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [session, dispatch]);
+  }, []);
 
   return (
     <nav className="relative z-[1000] bg-white/30 backdrop-brightness-40 shadow-md border-b border-white/20">
@@ -49,7 +43,7 @@ export default function Navbar() {
               height={40}
               className="mr-5"
             />
-            <Link href="/" className="text-2xl font-bold text-white">
+            <Link href="/home" className="text-2xl font-bold text-white">
               The Panda World
             </Link>
           </div>
@@ -120,9 +114,10 @@ export default function Navbar() {
             ) : (
               <button
                 onClick={() => signIn("google")}
-                className="text-white bg-green-700 hover:bg-green-800 px-3 py-2 rounded-md text-sm font-medium transition duration-300"
+                className="w-24 flex justify-between items-center text-white bg-green-700 hover:bg-green-800 px-3 py-2 rounded-md text-sm font-medium transition duration-300"
               >
-                Sign In
+                <div>Sign In</div>
+                <LogIn size={15} />
               </button>
             )}
           </div>

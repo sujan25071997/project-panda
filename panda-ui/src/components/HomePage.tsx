@@ -1,3 +1,5 @@
+import ImageSlideOnEdge from "./core-components/ImageSideOnEdge";
+import PandaPopulationCard from "./core-components/PandaPopulationCard";
 import { RunawayPanda } from "./core-components/RunawayPanda";
 import TransparentCard from "./core-components/TransparentCard";
 
@@ -8,7 +10,13 @@ export const HomePage = () => {
       <div className="absolute inset-0 bg-black/10" />
 
       <RunawayPanda />
-
+      <ImageSlideOnEdge
+        src="/welcome-panda.gif"
+        direction="right"
+        width={200}
+        height={200}
+        threshold={200}
+      />
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 p-10 relative z-10">
         <TransparentCard className="max-w-md">
           <h2 className="text-white text-2xl font-bold mb-2">
@@ -32,6 +40,9 @@ export const HomePage = () => {
             Shop Now
           </button>
         </TransparentCard>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 px-10 relative z-10">
+        <PandaPopulationCard />
       </div>
     </div>
   );

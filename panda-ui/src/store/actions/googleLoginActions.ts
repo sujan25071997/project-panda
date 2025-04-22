@@ -6,10 +6,12 @@ import axiosInstance from "@/utils/axiosInstance";
 import { toast } from "react-toastify";
 
 export const googleLogin =
-  (accessToken: string) => async (dispatch: AppDispatch) => {
+  (accessToken: string, refreshToken: string) =>
+  async (dispatch: AppDispatch) => {
     try {
-      const response = await axiosInstance.post("/google-login/", {
+      const response = await axiosInstance.post("google-login/", {
         access_token: accessToken,
+        refresh_token: refreshToken,
       });
 
       // Store the access token and refresh token in localStorage
@@ -19,14 +21,11 @@ export const googleLogin =
       // Store the user profile data in Redux
       dispatch(setUserProfile(response.data.user));
 
-      // Dispatch the success action with the access token
-      dispatch(googleLoginSuccess(response.data.access_token));
-
       toast.success("Successfully logged in!", { autoClose: 1500 });
-    } catch (error: any) {
+    } catch (error) {
       localStorage.clear();
       dispatch(googleLoginFailure("Google login failed"));
-      toast.error("Google login failed!", { autoClose: 2000 });
+      toast.error("Google login failed!", { autoClose: 1500 });
       signOut({ callbackUrl: "/home" });
     }
   };

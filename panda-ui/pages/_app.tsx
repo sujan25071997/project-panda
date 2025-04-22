@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import store from "@/store/store";
 import { ToastContainer } from "react-toastify";
 import { useRouter } from "next/router";
+import AutoLoginHandler from "@/components/core-components/AutoLoginHandler";
 
 export default function App({
   Component,
@@ -28,8 +29,9 @@ export default function App({
   return (
     <Provider store={store}>
       <SessionProvider session={session}>
+        <AutoLoginHandler />
         <div
-          className="flex flex-col min-h-screen relative"
+          className="flex flex-col h-screen relative overflow-hidden"
           style={{
             backgroundImage: getBackgroundImage(),
             backgroundSize: "cover",
