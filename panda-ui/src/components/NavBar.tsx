@@ -4,6 +4,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSession, signOut, signIn } from "next-auth/react";
 import { LogIn, LogOut, UserCircle2, UserPen } from "lucide-react";
+import { persistor } from "@/store/store";
 
 export default function Navbar() {
   const { data: session } = useSession();
@@ -14,7 +15,6 @@ export default function Navbar() {
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
-  const clearLocalStorage = () => localStorage.clear();
   const isActive = (path: string) => pathname === path;
 
   useEffect(() => {
@@ -30,6 +30,12 @@ export default function Navbar() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const logout = () => {
+    persistor.purge(); // clears redux-persist store
+    localStorage.clear();
+    signOut({ callbackUrl: "/home" });
+  };
 
   return (
     <nav className="relative z-[1000] bg-white/30 backdrop-brightness-40 shadow-md border-b border-white/20">
@@ -101,8 +107,8 @@ export default function Navbar() {
                   <div className="border-t border-gray-200 my-1"></div>
                   <button
                     onClick={() => {
-                      signOut({ callbackUrl: "/" });
-                      clearLocalStorage();
+                      logout();
+                      setDropdownOpen(false);
                     }}
                     className="flex justify-between cursor-pointer w-full text-left px-4 py-2 text-sm text-gray-800 hover:bg-green-600 transition rounded-b-md"
                   >
@@ -184,8 +190,7 @@ export default function Navbar() {
                 </Link>
                 <button
                   onClick={() => {
-                    signOut({ callbackUrl: "/" });
-                    clearLocalStorage();
+                    logout();
                     toggleMenu();
                   }}
                   className="text-white hover:bg-green-600 w-full text-left px-3 py-2 rounded-md text-base font-medium transition duration-300"

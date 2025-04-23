@@ -1,3 +1,4 @@
+import Link from "next/link";
 import ImageSlideOnEdge from "./core-components/ImageSideOnEdge";
 import PandaPopulationCard from "./core-components/PandaPopulationCard";
 import { RunawayPanda } from "./core-components/RunawayPanda";
@@ -33,12 +34,14 @@ export const HomePage = () => {
             🛍️ Featured Panda Product
           </h2>
           <p className="text-white/80 mb-4">
-            Introducing our latest panda plushie: *Blushy the Panda* — soft,
-            cuddly, and 100% adorable.
+            Introducing our latest panda plushie: <em>Blushy the Panda</em> —
+            soft, cuddly, and 100% adorable.
           </p>
-          <button className="mt-2 px-4 py-2 bg-white text-green-700 font-semibold rounded-xl hover:bg-green-100 transition">
-            Shop Now
-          </button>
+          <Link href="/explore">
+            <button className="mt-2 px-4 py-2 bg-white text-green-700 font-semibold rounded-xl hover:bg-green-100 transition">
+              Explore Panda World 🌏
+            </button>
+          </Link>
         </TransparentCard>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 px-10 relative z-10">

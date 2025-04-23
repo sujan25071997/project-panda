@@ -16,8 +16,10 @@ const googleLoginSlice = createSlice({
   reducers: {
     googleLoginSuccess: (state, action: PayloadAction<string>) => {
       state.accessToken = action.payload;
+      state.error = null;
     },
     googleLoginFailure: (state, action: PayloadAction<string>) => {
+      state.accessToken = null;
       state.error = action.payload;
     },
   },

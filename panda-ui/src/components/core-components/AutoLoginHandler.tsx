@@ -1,26 +1,35 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { googleLogin } from "@/store/actions/googleLoginActions";
+import { RootState } from "@/store/store";
 
 const AutoLoginHandler = () => {
   const { data: session } = useSession();
   const dispatch = useDispatch();
-  const hasLoggedIn = useRef(false); // prevent repeat logins
+  const isLoggedIn = useSelector(
+    (state: RootState) => state.googleLogin.isLoggedIn
+  );
 
   useEffect(() => {
-    if (hasLoggedIn.current) return;
+    const alreadyLoggedIn = localStorage.getItem("alreadyLoggedIn");
 
     const accessToken =
       session?.user?.accessToken || localStorage.getItem("access_token");
     const refreshToken =
       session?.user?.refreshToken || localStorage.getItem("refresh_token");
 
-    if (session && accessToken && refreshToken) {
+    if (
+      !isLoggedIn &&
+      !alreadyLoggedIn &&
+      session &&
+      accessToken &&
+      refreshToken
+    ) {
       dispatch(googleLogin(accessToken, refreshToken));
-      hasLoggedIn.current = true; // prevent future dispatches
+      localStorage.setItem("alreadyLoggedIn", "true"); // prevent reruns
     }
-  }, [session, dispatch]);
+  }, [session, isLoggedIn, dispatch]);
 
   return null;
 };

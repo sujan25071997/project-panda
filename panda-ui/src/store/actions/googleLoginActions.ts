@@ -3,7 +3,7 @@ import {
   googleLoginSuccess,
   googleLoginFailure,
 } from "../slices/googleLoginSlice";
-import { AppDispatch } from "../store";
+import type { AppDispatch } from "@/store/store";
 import { setUserProfile } from "../slices/userProfileSlice";
 import axiosInstance from "@/utils/axiosInstance";
 import { toast } from "react-toastify";
@@ -17,14 +17,24 @@ export const googleLogin =
         refresh_token: refreshToken,
       });
 
-      // Store the access token and refresh token in localStorage
-      localStorage.setItem("access_token", response.data.access_token);
-      localStorage.setItem("refresh_token", response.data.refresh_token);
+      const {
+        access_token: newAccessToken,
+        refresh_token: newRefreshToken,
+        user,
+      } = response.data;
 
-      // Store the user profile data in Redux
-      dispatch(setUserProfile(response.data.user));
+      if (newAccessToken && newRefreshToken && user) {
+        localStorage.setItem("access_token", newAccessToken);
+        localStorage.setItem("refresh_token", newRefreshToken);
 
-      toast.success("Successfully logged in!", { autoClose: 1500 });
+        // ✅ Update redux store
+        dispatch(googleLoginSuccess(newAccessToken));
+        dispatch(setUserProfile(user));
+
+        toast.success("Successfully logged in!", { autoClose: 1500 });
+      } else {
+        throw new Error("Invalid response from server");
+      }
     } catch (error) {
       localStorage.clear();
       dispatch(googleLoginFailure("Google login failed"));
