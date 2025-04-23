@@ -1,7 +1,10 @@
 import { signOut } from "next-auth/react";
-import { googleLoginSuccess, googleLoginFailure } from "../googleLoginSlice";
+import {
+  googleLoginSuccess,
+  googleLoginFailure,
+} from "../slices/googleLoginSlice";
 import { AppDispatch } from "../store";
-import { setUserProfile } from "../userProfileSlice";
+import { setUserProfile } from "../slices/userProfileSlice";
 import axiosInstance from "@/utils/axiosInstance";
 import { toast } from "react-toastify";
 

@@ -3,7 +3,7 @@ import { AppDispatch } from "../store";
 import {
   fetchUserProfileFailure,
   fetchUserProfileSuccess,
-} from "../userProfileSlice";
+} from "../slices/userProfileSlice";
 import axiosInstance from "@/utils/axiosInstance";
 
 export const getProfileByEmail =

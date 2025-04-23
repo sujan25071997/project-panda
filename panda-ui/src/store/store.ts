@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import googleLoginReducer from "./googleLoginSlice";
-import userProfileReducer from "./userProfileSlice";
+import googleLoginReducer from "./slices/googleLoginSlice";
+import userProfileReducer from "./slices/userProfileSlice";
 
 const store = configureStore({
   reducer: {
