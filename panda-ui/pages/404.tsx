@@ -13,7 +13,7 @@ const NotFoundPage = () => {
           alt="Sad Panda"
           width={220}
           height={220}
-          className="mx-auto mb-6 animate-bounce"
+          className="mx-auto mb-6"
         />
         <h1 className="text-4xl font-bold text-white mb-4">
           404 - Panda Not Found 🐼
