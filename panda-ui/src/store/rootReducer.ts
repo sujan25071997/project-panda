@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import googleLoginReducer from "./googleLoginSlice";
-import userProfileReducer from "./userProfileSlice";
+import googleLoginReducer from "./slices/googleLoginSlice";
+import userProfileReducer from "./slices/userProfileSlice";
 
 const rootReducer = combineReducers({
   googleLogin: googleLoginReducer,

@@ -7,6 +7,7 @@ A full-stack eCommerce web app featuring panda-themed products — built with **
 ## 🧱 Tech Stack
 
 ### Frontend – [`panda-ui/`](./panda-ui)
+
 - [Next.js 15](https://nextjs.org/)
 - [React 19](https://reactjs.org/)
 - [Redux Toolkit](https://redux-toolkit.js.org/)
@@ -14,11 +15,11 @@ A full-stack eCommerce web app featuring panda-themed products — built with **
 - Tailwind CSS for styling
 
 ### Backend – [`panda_api/`](./panda_api)
+
 - [Django 4+](https://www.djangoproject.com/)
 - [Django REST Framework](https://www.django-rest-framework.org/)
 - JWT Authentication using `rest_framework_simplejwt`
 - Custom `User` model
-
 
 ---
 
@@ -45,7 +46,7 @@ GOOGLE_OAUTH_CLIENT_ID=your-google-client-id
 GOOGLE_OAUTH_CLIENT_SECRET=your-google-client-secret
 --------------------
 
-# run command 
+# run command
 python manage.py migrate
 python manage.py runserver
 
@@ -62,3 +63,7 @@ NEXT_PUBLIC_API_URL=http://localhost:8000/api
 
 # 🧪 Run dev server
 npm run dev
+
+
+$ Stop-Process -Id (Get-NetTCPConnection -LocalPort 3000).OwningProcess -Force
+```

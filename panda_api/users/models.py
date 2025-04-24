@@ -20,13 +20,22 @@ class CustomUserManager(UserManager):
 class CustomUser(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     username = None
-    email = models.EmailField(_('email address'), unique=True)
+    email = models.EmailField(_('email address'), unique=True, editable=False)
     google_id = models.CharField(_('Google ID'), max_length=255, unique=True, null=True, blank=True)
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=30, blank=True)
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
     last_login = models.DateTimeField(_('last login'), null=True, blank=True)
+
+    gender = models.CharField(max_length=15, blank=True)
+    phone = models.CharField(max_length=15, blank=True)
+    address_line1 = models.CharField(max_length=255, blank=True)
+    address_line2 = models.CharField(max_length=255, blank=True)
+    city = models.CharField(max_length=100, blank=True)
+    state = models.CharField(max_length=100, blank=True)
+    country = models.CharField(max_length=100, blank=True)
+    pincode = models.CharField(max_length=10, blank=True)
 
     objects = CustomUserManager()  # Use the custom manager
 

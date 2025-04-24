@@ -1,26 +1,44 @@
-import { googleLoginSuccess, googleLoginFailure } from "../googleLoginSlice";
-import { AppDispatch } from "../store";
-import { setUserProfile } from "../userProfileSlice";
+import { signOut } from "next-auth/react";
+import {
+  googleLoginSuccess,
+  googleLoginFailure,
+} from "../slices/googleLoginSlice";
+import type { AppDispatch } from "@/store/store";
+import { setUserProfile } from "../slices/userProfileSlice";
 import axiosInstance from "@/utils/axiosInstance";
+import { toast } from "react-toastify";
 
 export const googleLogin =
-  (accessToken: string) => async (dispatch: AppDispatch) => {
+  (accessToken: string, refreshToken: string) =>
+  async (dispatch: AppDispatch) => {
     try {
-      const response = await axiosInstance.post("/google-login/", {
+      const response = await axiosInstance.post("google-login/", {
         access_token: accessToken,
+        refresh_token: refreshToken,
       });
 
-      // Store the access token and refresh token in localStorage
-      localStorage.setItem("access_token", response.data.access_token);
-      localStorage.setItem("refresh_token", response.data.refresh_token);
+      const {
+        access_token: newAccessToken,
+        refresh_token: newRefreshToken,
+        user,
+      } = response.data;
 
-      // Store the user profile data in Redux
-      dispatch(setUserProfile(response.data.user));
+      if (newAccessToken && newRefreshToken && user) {
+        localStorage.setItem("access_token", newAccessToken);
+        localStorage.setItem("refresh_token", newRefreshToken);
 
-      // Dispatch the success action with the access token
-      dispatch(googleLoginSuccess(response.data.access_token));
-    } catch (error: any) {
+        // ✅ Update redux store
+        dispatch(googleLoginSuccess(newAccessToken));
+        dispatch(setUserProfile(user));
+
+        toast.success("Successfully logged in!", { autoClose: 1500 });
+      } else {
+        throw new Error("Invalid response from server");
+      }
+    } catch (error) {
+      localStorage.clear();
       dispatch(googleLoginFailure("Google login failed"));
-      console.error("Error during Google login:", error.message);
+      toast.error("Google login failed!", { autoClose: 1500 });
+      signOut({ callbackUrl: "/home" });
     }
   };

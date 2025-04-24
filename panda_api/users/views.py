@@ -89,3 +89,40 @@ class UpdateUserProfileView(generics.RetrieveUpdateAPIView):
             'user': serializer.data,
             'message': 'Profile updated successfully'
         })
+
+class UpdateUserProfileView(generics.RetrieveUpdateAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = UserProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        # If "email" query param is provided, get profile by email
+        email = self.request.query_params.get("email")
+        if email:
+            try:
+                return CustomUser.objects.get(email=email)
+            except CustomUser.DoesNotExist:
+                return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        # Otherwise, return the logged-in user's profile
+        return self.request.user
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if isinstance(instance, Response):
+            return instance  # If get_object returns a Response (e.g., 404), return it directly
+        serializer = self.get_serializer(instance)
+        return Response({"user": serializer.data})
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        if isinstance(instance, Response):
+            return instance  # If get_object returns a Response (e.g., 404), return it directly
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response({
+            'user': serializer.data,
+            'message': 'Profile updated successfully'
+        })

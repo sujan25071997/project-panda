@@ -7,6 +7,7 @@ type ButtonProps = {
   onClick?: () => void;
   children: React.ReactNode;
   className?: string;
+  disabled?: boolean;
 };
 
 const Button: React.FC<ButtonProps> = ({
@@ -14,13 +15,22 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   children,
   className = "",
+  disabled,
 }) => {
+  const baseStyles =
+    "w-40 text-white py-2 px-4 rounded-md transition duration-300";
+  const enabledStyles = "bg-emerald-600 hover:bg-emerald-700 cursor-pointer";
+  const disabledStyles = "bg-gray-400 cursor-not-allowed";
+
   return (
     <div className="w-full flex justify-end">
       <button
         type={type}
         onClick={onClick}
-        className={`w-40 bg-emerald-600 text-white py-2 px-4 rounded-md hover:bg-emerald-700 transition ${className}`}
+        disabled={disabled}
+        className={`${baseStyles} ${
+          disabled ? disabledStyles : enabledStyles
+        } ${className}`}
       >
         {children}
       </button>
