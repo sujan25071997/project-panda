@@ -10,13 +10,6 @@ export const AboutPage = () => {
 
       {/* Page content */}
       <div className="relative z-10 max-w-3xl text-center bg-white/10 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-white/20">
-        <Image
-          src="/panda-bubu.gif"
-          alt="Animated Panda"
-          width={100}
-          height={100}
-          className="fixed bottom-99 drop-shadow-xl"
-        />
         <h1 className="text-4xl sm:text-5xl font-extrabold mb-6 bg-gradient-to-r from-lime-300 to-green-400 text-transparent bg-clip-text drop-shadow-md">
           Welcome to The Panda World 🐼
         </h1>
@@ -31,9 +24,22 @@ export const AboutPage = () => {
           Built with ❤️ using Next.js, React, Tailwind, and pure panda power.
         </p>
 
-        <button className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-6 rounded-xl shadow-md transition-all duration-300">
+        <button className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-6 rounded-xl shadow-md transition-all duration-300 mb-4">
           Browse Panda Goodies
         </button>
+
+        {/* 👇 Credit section */}
+        <div className="mt-6 text-sm text-gray-400">
+          © 2025 Panda World. Crafted with 🐼 by{" "}
+          <span className="font-semibold text-green-300">Sujan Chhetri</span>.
+        </div>
+        <Image
+          src="/panda-bubu.gif"
+          alt="Animated Panda"
+          width={100}
+          height={100}
+          className="absolute bottom-[-6px] drop-shadow-xl"
+        />
       </div>
     </div>
   );
