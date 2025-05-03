@@ -57,6 +57,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center space-x-4">
             {[
               { label: "Home", href: "/home" },
+              { label: "Explore", href: "/explore" },
               { label: "About", href: "/about" },
             ].map(({ label, href }) => (
               <Link
@@ -167,6 +168,7 @@ export default function Navbar() {
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-green-700">
             {[
               { label: "Home", href: "/home" },
+              { label: "Explore", href: "/explore" },
               { label: "About", href: "/about" },
             ].map(({ label, href }) => (
               <Link

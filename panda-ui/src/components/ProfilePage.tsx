@@ -1,13 +1,17 @@
-import { RootState } from "@/store/store";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import {
+  selectUserProfile,
+  selectUserProfileLoading,
+} from "@/store/selectors/userProfileSelectors";
 import InputField from "./core-components/InputField";
 import Button from "./core-components/Button";
-import { updateProfile } from "@/store/actions/profileActions";
+import { updateProfile } from "@/store/actions/userProfileActions";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import RadioButtonGroup from "./core-components/RadioButtonGroup";
 import Image from "next/image";
+import isEqual from "lodash/isEqual";
 
 // Validation schema using Yup
 const validationSchema = Yup.object({
@@ -24,16 +28,14 @@ const validationSchema = Yup.object({
 });
 
 export const ProfilePage = () => {
-  const dispatch = useDispatch();
-  const userProfile = useSelector((state: RootState) => state.userProfile);
-
-  const [initialProfile, setInitialProfile] = useState(
-    userProfile?.profile || {}
-  );
+  const dispatch = useAppDispatch();
+  const userProfile = useAppSelector(selectUserProfile);
+  const isUpdating = useAppSelector(selectUserProfileLoading);
+  const [initialProfile, setInitialProfile] = useState(userProfile || {});
 
   // Initialize formik with initial values and validation schema
   const formik = useFormik({
-    enableReinitialize: true, // <-- this is the fix
+    enableReinitialize: true,
     initialValues: {
       first_name: initialProfile.first_name || "",
       last_name: initialProfile.last_name || "",
@@ -47,21 +49,28 @@ export const ProfilePage = () => {
       pincode: initialProfile.pincode || "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       if (initialProfile.id) {
-        dispatch(updateProfile(initialProfile.id, values));
+        try {
+          await dispatch(
+            updateProfile({ id: initialProfile.id, profileData: values })
+          );
+          // Do not update initialProfile here; let Redux state handle it
+        } catch (error) {
+          console.error("Failed to update profile:", error);
+        }
       }
     },
   });
 
   useEffect(() => {
-    if (userProfile?.profile) {
-      setInitialProfile(userProfile.profile);
+    if (userProfile) {
+      setInitialProfile(userProfile);
+      formik.setValues(userProfile); // Sync form with latest Redux state
     }
-  }, [userProfile?.profile]);
+  }, [userProfile]);
 
-  const hasChanges =
-    JSON.stringify(formik.values) !== JSON.stringify(initialProfile);
+  const hasChanges = !isEqual(formik.values, initialProfile);
 
   return (
     <div className="relative min-h-screen">
@@ -169,8 +178,11 @@ export const ProfilePage = () => {
                 error={formik.touched.pincode && formik.errors.pincode}
               />
             </div>
-            <Button type="submit" disabled={!hasChanges || !formik.isValid}>
-              Update
+            <Button
+              type="submit"
+              disabled={!hasChanges || !formik.isValid || isUpdating}
+            >
+              {isUpdating ? "Updating..." : "Update"}
             </Button>
           </form>
           <Image
